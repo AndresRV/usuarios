@@ -15,4 +15,10 @@ public class RoleUseCase implements IRoleServicePort {
     public Role getRoleByRoleName(String roleName) {
         return rolePersistencePort.getRoleByRoleName(roleName);
     }
+
+    @Override
+    public boolean isOwnerRol(Long id) {
+        Role role = rolePersistencePort.findById(id);
+        return role.getRoleName().equals("Propietario");
+    }
 }

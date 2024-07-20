@@ -36,6 +36,11 @@ public class UserUseCase implements IUserServicePort {
         userPersistencePort.saveUser(user);
     }
 
+    @Override
+    public User getUser(Long id) {
+        return userPersistencePort.findById(id);
+    }
+
     private static void validateEmail(String email) {
         Matcher matcher = Pattern.compile(EMAIL_REGEX).matcher(email);
         if (!matcher.matches())

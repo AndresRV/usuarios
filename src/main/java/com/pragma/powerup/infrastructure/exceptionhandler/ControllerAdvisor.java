@@ -6,6 +6,7 @@ import com.pragma.powerup.domain.exception.InvalidPhoneNumber;
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
 import com.pragma.powerup.infrastructure.exception.RoleNotFoundException;
 import com.pragma.powerup.infrastructure.exception.UserAlreadyExistsException;
+import com.pragma.powerup.infrastructure.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,6 +39,13 @@ public class ControllerAdvisor {
             RoleNotFoundException ignoredRoleNotFoundException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.ROLE_FOUND.getMessage()));
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleUserNotFoundException(
+            UserNotFoundException ignoredUserNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_FOUND.getMessage()));
     }
 
     @ExceptionHandler(InvalidEmailException.class)
