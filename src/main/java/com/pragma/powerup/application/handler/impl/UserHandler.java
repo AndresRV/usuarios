@@ -8,6 +8,7 @@ import com.pragma.powerup.domain.api.IUserServicePort;
 import com.pragma.powerup.domain.model.Role;
 import com.pragma.powerup.domain.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +23,13 @@ public class UserHandler implements IUserHandler {
     @Override
     public void saveUser(String roleName, UserRequest userRequest) {
         Role role = roleServicePort.getRoleByRoleName(roleName);
+
         User user = userRequestMapper.toUser(userRequest);
         user.setIdRole(role.getId());
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPass(passwordEncoder.encode(user.getPass()));
+
         userServicePort.saveUser(user);
     }
 

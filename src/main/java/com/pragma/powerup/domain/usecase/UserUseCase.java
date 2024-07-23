@@ -27,8 +27,6 @@ public class UserUseCase implements IUserServicePort {
 
     @Override
     public void saveUser(User user) {
-        //TODO: encriptar clave con bcrypt
-
         validateEmail(user.getEmail());
         validatePhoneNumber(user.getPhoneNumber());
         validateAdultAge(user.getBirthDate());

@@ -13,3 +13,7 @@ spring:
     show-sql: true
 appDescription: "Pragma Powerup"
 appVersion: "1.0.0"
+
+security:
+  jwt-key: ea69c58750cbe6d90fedff638d48938a8b9165e0a59278b77e7754e0a6b00031
+  jwt-user-generator: AUTH0JWT
