@@ -22,7 +22,7 @@ import java.util.Collection;
 public class JwtTokenValidator extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
-    //TODO: probar que sucede con requiere args constructor
+    //TODO: CONOCIMIENTO probar que sucede con requiere args constructor
     public JwtTokenValidator(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
     }
@@ -44,7 +44,7 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
             Collection<? extends GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(stringAuthorities);
 
-            SecurityContext context = SecurityContextHolder.getContext(); //.createEmptyContext(); TODO:uso fue getContex por que lo cambio en el repositorio?
+            SecurityContext context = SecurityContextHolder.getContext(); //.createEmptyContext(); TODO: CONOCIMIENTO uso fue getContex por que lo cambio en el repositorio?
             Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
             context.setAuthentication(authenticationToken);
             SecurityContextHolder.setContext(context);

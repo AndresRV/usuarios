@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-//@RequiredArgsConstructor TODO: buscar requiredargs comentados y probar con beanconfiguration
+//@RequiredArgsConstructor TODO: CONOCIMIENTO buscar requiredargs comentados y probar con beanconfiguration
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private JwtUtils jwtUtils;
