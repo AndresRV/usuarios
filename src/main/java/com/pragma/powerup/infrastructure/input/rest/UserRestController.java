@@ -32,4 +32,11 @@ public class UserRestController {
     public ResponseEntity<Boolean> isOwnerUser(@PathVariable Long idUser) {
         return ResponseEntity.ok(userHandler.isOwnerUser(idUser));
     }
+
+    @PostMapping("/Empleado")
+    @PreAuthorize("hasRole('Propietario')")
+    public ResponseEntity<Void> saveEmployeeUser(@RequestBody UserRequest userRequest) {
+        userHandler.saveUser("Empleado", userRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }
