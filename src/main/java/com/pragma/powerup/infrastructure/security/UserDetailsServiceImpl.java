@@ -1,10 +1,11 @@
 package com.pragma.powerup.infrastructure.security;
 
+import com.pragma.powerup.application.dto.request.UserRequest;
+import com.pragma.powerup.application.mapper.IUserRequestMapper;
 import com.pragma.powerup.domain.spi.IRolePersistencePort;
 import com.pragma.powerup.domain.spi.IUserPersistencePort;
 import com.pragma.powerup.infrastructure.security.dto.AuthLoginRequest;
 import com.pragma.powerup.infrastructure.security.dto.AuthResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,6 +34,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private /*final*/ IUserPersistencePort userPersistencePort;
     @Autowired
     private /*final*/ IRolePersistencePort rolePersistencePort;
+    @Autowired
+    private /*final*/ IUserRequestMapper userRequestMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -79,5 +82,31 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         return new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
+    }
+
+    public AuthResponse saveUser(String roleName, UserRequest userRequest) {
+        com.pragma.powerup.domain.model.Role role = rolePersistencePort.getRoleByRoleName(roleName);
+
+        com.pragma.powerup.domain.model.User user = userRequestMapper.toUser(userRequest);
+        user.setIdRole(role.getId());
+
+        user.setPass(passwordEncoder.encode(user.getPass()));
+
+        userPersistencePort.saveUser(user);
+
+        ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_".concat(role.getRoleName())));
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userRequest.getDocumentNumber(), null, authorities);
+
+        String accessToken = jwtUtils.createToken(authentication);
+
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setUsername(Integer.toString(user.getDocumentNumber()));
+        authResponse.setMessage("User created successfully");
+        authResponse.setJwt(accessToken);
+        authResponse.setStatus(true);
+
+        return authResponse;
     }
 }
