@@ -5,6 +5,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.pragma.powerup.domain.spi.IUserPersistencePort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,9 @@ public class JwtUtils {
     @Value("${security.jwt-user-generator}")
     private String userGenerator;
 
+    @Autowired
+    private /*final*/ IUserPersistencePort userPersistencePort;
+
     public String createToken(Authentication authentication) {
         Algorithm algorithm = Algorithm.HMAC256(this.privateKey);
 
@@ -32,10 +37,14 @@ public class JwtUtils {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
+        //TODO: MEJORA mismos comentarios de userDetailsServiceImpl
+        com.pragma.powerup.domain.model.User user = userPersistencePort.findByDocumentNumber(Integer.parseInt(username));
+
         String jwtToken = JWT.create()
                 .withIssuer(this.userGenerator)
                 .withSubject(username)
                 .withClaim("authorities", authorities)
+                .withClaim("ui", user.getId())
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1800000)) //30 minutos en milisegundos
                 .withJWTId(UUID.randomUUID().toString())

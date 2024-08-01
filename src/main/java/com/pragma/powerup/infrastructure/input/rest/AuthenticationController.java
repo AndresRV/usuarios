@@ -3,7 +3,6 @@ package com.pragma.powerup.infrastructure.input.rest;
 import com.pragma.powerup.infrastructure.security.dto.AuthLoginRequest;
 import com.pragma.powerup.infrastructure.security.dto.AuthResponse;
 import com.pragma.powerup.infrastructure.security.UserDetailsServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
