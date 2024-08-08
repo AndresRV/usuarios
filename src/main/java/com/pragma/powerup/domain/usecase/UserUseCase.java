@@ -39,6 +39,11 @@ public class UserUseCase implements IUserServicePort {
         return userPersistencePort.findById(id);
     }
 
+    @Override
+    public User getUserByDocumentNumber(Integer documentNumber) {
+        return userPersistencePort.findByDocumentNumber(documentNumber);
+    }
+
     private static void validateEmail(String email) {
         Matcher matcher = Pattern.compile(EMAIL_REGEX).matcher(email);
         if (!matcher.matches())

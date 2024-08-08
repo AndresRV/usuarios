@@ -7,6 +7,8 @@ import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
 import com.pragma.powerup.infrastructure.exception.RoleNotFoundException;
 import com.pragma.powerup.infrastructure.exception.UserAlreadyExistsException;
 import com.pragma.powerup.infrastructure.exception.UserNotFoundException;
+import com.pragma.powerup.infrastructure.exception.UserRestaurantAlreadyExistsException;
+import com.pragma.powerup.infrastructure.exception.UserRestaurantNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -46,6 +48,20 @@ public class ControllerAdvisor {
             UserNotFoundException ignoredUserNotFoundException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_FOUND.getMessage()));
+    }
+
+    @ExceptionHandler(UserRestaurantNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleUserRestaurantNotFoundException(
+            UserRestaurantNotFoundException ignoredUserRestaurantNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_RESTAURANT_FOUND.getMessage()));
+    }
+
+    @ExceptionHandler(UserRestaurantAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handleUserRestaurantAlreadyExistsException(
+            UserRestaurantAlreadyExistsException ignoredUserRestaurantAlreadyExistsException) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_RESTAURANT_ALREADY_EXISTS.getMessage()));
     }
 
     @ExceptionHandler(InvalidEmailException.class)
