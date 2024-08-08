@@ -46,7 +46,7 @@ public class JwtUtils {
                 .withClaim("authorities", authorities)
                 .withClaim("ui", user.getId())
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1800000)) //30 minutos en milisegundos
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1800000*2*6)) //30 minutos en milisegundos *2*6
                 .withJWTId(UUID.randomUUID().toString())
                 .withNotBefore(new Date(System.currentTimeMillis()))
                 .sign(algorithm);
