@@ -38,4 +38,9 @@ public class UserHandler implements IUserHandler {
         User user = userServicePort.getUser(idUser);
         return roleServicePort.isOwnerRol(user.getIdRole());
     }
+
+    @Override
+    public String emailUser(Long idUser) {
+        return userServicePort.getUser(idUser).getEmail();
+    }
 }

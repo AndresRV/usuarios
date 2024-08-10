@@ -54,4 +54,10 @@ public class UserRestController {
         AuthResponse tokenSaveUser = userDetailsService.saveUser("Cliente", userRequest);
         return new ResponseEntity<>(tokenSaveUser, HttpStatus.CREATED);
     }
+
+    @GetMapping("/{idUser}/email")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<String> emailUser(@PathVariable Long idUser) {
+        return ResponseEntity.ok(userHandler.emailUser(idUser));
+    }
 }
